@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
  *  Esta clase es lo opuesto a la clase <tt> ListaAbstracta</tt> en el sentido
  * que implementa los métodos de "acceso aleatorio" (<tt> obtener(int index)
  * </tt>, <tt> set (índice int, elemento E) </tt>, <tt> agregar (índice int,
- * elemento E) </tt> y  * <tt> remover (índice int) </tt>) en la parte superior
+ * elemento E) </tt> y<tt> remover (índice int) </tt>) en la parte superior
  * del iterador de la lista, en lugar de al revés.
  * <p>
  *  
