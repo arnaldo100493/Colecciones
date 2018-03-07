@@ -93,11 +93,11 @@ import java.util.function.UnaryOperator;
  * <a href="{@docRoot}/../technotes/guides/collections/index.html">
  *  * Java Collections Framework </a>.
  *
- * @param <E> el tipo de elementos contenidos en esta lista
+ * @since 1.2
  * @author FABAME
  * @see Coleccion
  * @see ListaAbstracta
- * @since 1.2
+ * @param <E> el tipo de elementos contenidos en esta lista
  */
 public interface Lista<E> extends Coleccion<E> {
 
@@ -453,8 +453,7 @@ public interface Lista<E> extends Coleccion<E> {
      * concatenar los arreglos y ordenar el arreglo resultante.
      * <p>
      * La implementación fue adaptada del tipo de lista de Tim Peters para
-     * Python
-     * (<a href=
+     * Python      (<a href=
      * "http://svn.python.org/projects/python/trunk/Objects/listsort.txt">
      * TimSort</a>). Utiliza técnicas de "Optimistic" de Peter McIlroy
      * Clasificación e Información Complejidad Teórica ", en Procedimientos de

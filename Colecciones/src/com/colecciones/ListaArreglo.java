@@ -105,12 +105,12 @@ import java.util.function.UnaryOperator;
  * <a href="{@docRoot}/../technotes/guides/collections/index.html">
  * Java Collections Framework</a>.
  *
+ * @since 1.2
  * @author FABAME
  * @see Coleccion
  * @see Lista
  * @see ListaEnlazada
  * @see ListaVector
- * @since 1.2
  * @param <E> el tipo de elementos contenidos en esta colección 
  */
 public class ListaArreglo<E> extends ListaAbstracta<E>

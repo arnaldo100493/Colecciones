@@ -22,8 +22,8 @@ import java.util.NoSuchElementException;
  *  Esta clase es lo opuesto a la clase <tt> ListaAbstracta</tt> en el sentido
  * que implementa los métodos de "acceso aleatorio" (<tt> obtener(int index)
  * </tt>, <tt> set (índice int, elemento E) </tt>, <tt> agregar (índice int,
- * elemento E) </tt> y<tt> remover (índice int) </tt>) en la parte superior
- * del iterador de la lista, en lugar de al revés.
+ * elemento E) </tt> y<tt> remover (índice int) </tt>) en la parte superior del
+ * iterador de la lista, en lugar de al revés.
  * <p>
  *  
  * Para implementar una lista, el programador solo necesita extender esta clase
@@ -52,13 +52,13 @@ import java.util.NoSuchElementException;
  * <a href="{@docRoot}/../technotes/guides/collections/index.html">
  * Java Collections Framework </a>.
  *
+ * @since 1.2  
  * @author FABAME
- * @param <E> el tipo de elementos contenidos en esta colección
  * @see Coleccion  
  * @see Lista
  * @see ListaAbstracta
  * @see ColeccionAbstracta
- * @since 1.2  
+ * @param <E> el tipo de elementos contenidos en esta colección
  */
 public abstract class ListaSecuencialAbstracta<E> extends ListaAbstracta<E> {
 

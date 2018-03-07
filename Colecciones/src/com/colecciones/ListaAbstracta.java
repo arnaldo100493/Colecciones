@@ -47,9 +47,9 @@ import java.util.RandomAccess;
  * <a href="{@docRoot}/../technotes/guides/collections/index.html">
  * Java Collections Framework</a>.
  *
- * @param <E> el tipo de elementos contenidos en esta colección
- * @author FABAME
  * @since 1.2  
+ * @author FABAME
+ * @param <E> el tipo de elementos contenidos en esta colección
  */
 public abstract class ListaAbstracta<E> extends ColeccionAbstracta<E>
         implements Lista<E> {
@@ -449,7 +449,7 @@ public abstract class ListaAbstracta<E> extends ColeccionAbstracta<E>
      * {@code RandomAccess}.      
      * <p>
      * El {@code establecer(int, E)} de la subclase, todos los métodos null null
-     * null null null null null null null null null null null null     {@code obtener(int)},
+     * null null null null null null null null null null null null null     {@code obtener(int)},
      * {@code agregar (int, E)}, {@code remover(int)}, {@code agregarTodo(int,
      * Coleccion)} y {@code removerRangg (int, int)} delegar en los métodos
      * correspondientes en la lista de resúmenes de respaldo, después de

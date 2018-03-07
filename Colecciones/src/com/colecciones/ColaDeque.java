@@ -197,9 +197,9 @@ import java.util.Iterator;
  * <a href ="{@docRoot}/../technicalotes/guides/collections/index.html">
  * Colecciones de Java Marco </a>.
  *
- * @param <E> el tipo de elementos contenidos en esta colección
+ * @since 1.6
  * @author FABAME
- * @since 1.6 
+ * @param <E> el tipo de elementos contenidos en esta colección 
  */
 public interface ColaDeque<E> extends Cola<E> {
 

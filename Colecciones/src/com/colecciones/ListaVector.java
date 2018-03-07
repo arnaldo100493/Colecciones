@@ -79,10 +79,10 @@ import java.util.function.UnaryOperator;
  * subprocesos la implementación no es necesaria, se recomienda usar
  * {@link ListaArreglo} en lugar de {@code ListaVector}.
  *
+ * @since JDK 1.0
  * @author FABAME
  * @see Coleccion
  * @see ListaEnlazada
- * @since JDK 1.0
  * @param <E> el tipo de elementos contenidos en esta colección 
  */
 public class ListaVector<E> extends ListaAbstracta<E>

@@ -83,8 +83,8 @@ package com.colecciones;
  * Los métodos {@link #elemento()} y {@link # ojear()} vuelven, pero lo hacen no
  * eliminar, el jefe de la cola. 
  * <p>
- * La interfaz {@code Cola} no define la <i>cola de bloqueo métodos</i>, que
- * son comunes en la programación concurrente. Estos métodos, que esperan que
+ * La interfaz {@code Cola} no define la <i>cola de bloqueo métodos</i>, que son
+ * comunes en la programación concurrente. Estos métodos, que esperan que
  * aparezcan los elementos o que el espacio esté disponible, son definido en la
  * interfaz {@link java.util.concurrent.BlockingQueue}, que extiende esta
  * interfaz. Las implementaciones de
@@ -112,13 +112,11 @@ package com.colecciones;
  * <a href="{@docRoot}/../technotes/guides/collections/index.html">
  * Java Collections Framework</a>.  
  *
- *
- *
- * @param <E> el tipo de elementos contenidos en esta colección
+ * @since 1.5
  * @author FABAME
  * @see Coleccion
  * @see ListaEnlazada
- * @since 1.5
+ * @param <E> el tipo de elementos contenidos en esta colección
  *
  */
 public interface Cola<E> extends Coleccion<E> {

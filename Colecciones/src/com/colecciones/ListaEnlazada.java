@@ -71,11 +71,11 @@ import java.util.function.Consumer;
  * <p>
  * Esta clase es miembro de la
  * <a href="{@docRoot}/../technotes/guides/collections/index.html">
- * Java Collections Framework </a>.
+ * Java Collections Framework</a>.
+ * @since 1.2
  * @author FABAME
  * @see Lista
  * @see ListaArreglo
- * @since 1.2
  * @param <E> el tipo de elementos contenidos en esta colección  
  */
 public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>

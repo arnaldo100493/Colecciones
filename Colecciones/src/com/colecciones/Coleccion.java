@@ -112,10 +112,10 @@ import java.util.stream.StreamSupport;
  * {@code Collection} tiene un protocolo de sincronización específico, entonces
  * debe anular el predeterminado implementaciones para aplicar ese protocolo.
  *
- * @param <E> el tipo de elementos contenidos en esta colección
+ * @since 1.8
  * @author FABAME
  * @see Lista
- * @since 1.8
+ * @param <E> el tipo de elementos contenidos en esta colección
  */
 public interface Coleccion<E> extends Iterable<E> {
 
@@ -476,7 +476,7 @@ public interface Coleccion<E> extends Iterable<E> {
      *
      * @since 1.8      
      */
-     public default boolean removerSi(Predicate<? super E> filtro) {
+    public default boolean removerSi(Predicate<? super E> filtro) {
         Objects.requireNonNull(filtro);
         boolean removido = false;
         final Iterator<E> cada = iterator();
@@ -495,8 +495,8 @@ public interface Coleccion<E> extends Iterable<E> {
      * esta llamada regrese, esta colección no contendrá ningún elemento en
      * común con el especificado colección.
      *
-     * @param coleccion colección que contiene elementos que se eliminarán de esta
-     * colección
+     * @param coleccion colección que contiene elementos que se eliminarán de
+     * esta colección
      * @return <tt>true</tt> si esta colección ha cambiado como resultado de la
      * llamada
      * @throws UnsupportedOperationException si el método <tt>removerTodo</tt>
@@ -536,9 +536,9 @@ public interface Coleccion<E> extends Iterable<E> {
      * }</pre>      
      * <p>
      * Estos requisitos garantizan que los flujos producidos por los métodos
-     * {@link #flujo()} y {@link #parallelStream()} reflejarán el contenido
-     * de la colección desde el inicio de la transmisión de la terminal
-     * operación.   
+     * {@link #flujo()} y {@link #parallelStream()} reflejarán el contenido de
+     * la colección desde el inicio de la transmisión de la terminal operación.
+     *   
      *
      * @implSpec       La implementación predeterminada crea un
      * <em><a href="Spliterator.html#binding"> enlace tardío </a> </em>

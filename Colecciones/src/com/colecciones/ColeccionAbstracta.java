@@ -44,10 +44,10 @@ import java.util.Objects;
  * <a href="{@docRoot}/../technotes/guides/collections/index.html">
  * Java Collections Framework </a>. 
  *
- * @param <E> el tipo de elementos contenidos en esta colección
+ * @since 1.2
  * @author FABAME
  * @see Coleccion
- * @since 1.2  
+ * @param <E> el tipo de elementos contenidos en esta colección
  */
 public abstract class ColeccionAbstracta<E> implements Coleccion<E> {
 
