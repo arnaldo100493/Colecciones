@@ -11,7 +11,7 @@ import java.util.Iterator;
  * Interfaz ColaDeque para guardar y manipular elementos en una ColaDeque.
  */
 /**
- * Una colección lineal que admite la inserción y eliminación de elementos en  *
+ * Una colección lineal que admite la inserción y eliminación de elementos en
  * ambos extremos. El nombre <i> deque </i> es la abreviatura de "cola de doble
  * final" y generalmente se pronuncia "cubierta". La mayoría {@code Deque} las
  * implementaciones no establecen límites fijos en la cantidad de elementos
@@ -22,60 +22,60 @@ import java.util.Iterator;
  * deque. Se proporcionan métodos para insertar, eliminar y examinar el
  * elemento. Cada uno de estos métodos existe en dos formas: uno lanza una
  * excepción si la operación falla, la otra devuelve un valor especial
- * ({@code null} o {@code false}, según  * la operacion). La última forma de la
+ * ({@code null} o {@code false}, según la operacion). La última forma de la
  * operación de inserción es diseñado específicamente para su uso con capacidad
  * restringida implementaciones {@code ColaDeque}; en la mayoría de las
  * implementaciones, inserte las operaciones no pueden fallar    
  * <p>
  * Los doce métodos descritos anteriormente se resumen en siguiente tabla:  
  * <table BORDER CELLPADDING=3 CELLSPACING=1>
- *   <caption> Resumen de métodos ColaDeque </caption>
+ *   <caption> Resumen de métodos ColaDeque</caption>
  *   <tr>
  *   <td> </td>
- *   <td ALIGN = CENTRE COLSPAN = 2> <b> Primer elemento (Encabezado) </b> </td>
- *   <td ALIGN = CENTRE COLSPAN = 2> <b> Último elemento (cola) </b> </td>
+ *   <td ALIGN = CENTRE COLSPAN = 2> <b>Primer elemento (Encabezado)</b></td>
+ *   <td ALIGN = CENTRE COLSPAN = 2> <b>Último elemento (cola)</b></td>
  *  </tr>
  * <tr>
  *   <td> </td>
- *   <td ALIGN = CENTER> <em> lanza una excepción </em> </td>
- *   <td ALIGN = CENTER> <em> Valor especial </em> </td>
- *   <td ALIGN = CENTER> <em> lanza una excepción </em> </td>
- * <td ALIGN = CENTER> <em> Valor especial </em> </td>
+ *   <td ALIGN = CENTER> <em>Lanza una excepción</em></td>
+ *   <td ALIGN = CENTER> <em>Valor especial</em></td>
+ *   <td ALIGN = CENTER> <em>Lanza una excepción</em></td>
+ * <td ALIGN = CENTER> <em>Valor especial</em></td>
  *   </tr>
  * <tr>
- *  <td> <b> Insertar </b> </td>
+ *  <td> <b>Insertar</b></td>
  * <td> {
  *
  * @param <E>
- * @link ColaDeque #agregarPrimero agregarPrimero (elemento)} </td>
+ * @link ColaDeque #agregarPrimero agregarPrimero (elemento)}</td>
  *  td> {
- * @link ColaDeque #ofrecerPrimero ofrecerPrimero (elemento)} </td>
+ * @link ColaDeque #ofrecerPrimero ofrecerPrimero (elemento)}</td>
  *  <td> {
- * @link ColaDeque #agregarUltimo agregarUltimo (elemento)} </td>
+ * @link ColaDeque #agregarUltimo agregarUltimo (elemento)}</td>
  *  <td> {
- * @link ColaDeque #ofrecerUltimo  ofrecerUltimo (elemento)} </td>
+ * @link ColaDeque #ofrecerUltimo  ofrecerUltimo (elemento)}</td>
  *  </tr>
  * <tr>
- * <td> <b> Eliminar </b> </td>
+ * <td> <b>Eliminar</b></td>
  *  <td> {
- * @link ColaDeque #removerPrimero removerPrimero()} </ td>
+ * @link ColaDeque #removerPrimero removerPrimero()}</td>
  *  <td> {
- * @link ColaDeque #encuestarPrimero encuestarPrimero()} </ td>
+ * @link ColaDeque #encuestarPrimero encuestarPrimero()}</td>
  *   <td> {
- * @link ColaDeque #removerUltimo removerUltimo()} </td>
+ * @link ColaDeque #removerUltimo removerUltimo()}</td>
  * <td> {
- * @link ColaDeque #encuestarUltimo encuestarUltimo()} </td>
+ * @link ColaDeque #encuestarUltimo encuestarUltimo()}</td>
  * </tr>
  * <tr>
- * <td> <b> Examinar </b> </td>
+ * <td> <b> Examinar</b></td>
  * <td> {
- * @link ColaDeque #obtenerPrimero obtenerPrimero()} </td>
+ * @link ColaDeque #obtenerPrimero obtenerPrimero()}</td>
  * <td> {
- * @link ColaDeque #ojearPrimero ojearPrimero()} </td>
+ * @link ColaDeque #ojearPrimero ojearPrimero()}</td>
  * <td> {
- * @link ColaDeque #obtenerUltimo obtenerUltimo()} </td>
+ * @link ColaDeque #obtenerUltimo obtenerUltimo()}</td>
  * <td> {
- * @link ColaDeque #ojearUltimo ojearUltimo()} </td>
+ * @link ColaDeque #ojearUltimo ojearUltimo()}</td>
  *   </tr>
  * </table>
  *
@@ -92,31 +92,31 @@ import java.util.Iterator;
  * <td ALIGN = CENTER> <b> {
  *
  * @code Cola} Método </b> </td>
- * <td ALIGN = CENTER> <b> Método equivalente {@code ColaDeque} </b> </td>
+ * <td ALIGN = CENTER> <b>Método equivalente {@code ColaDeque}</b></td>
  *   </ tr>
  * <tr>
  *   <td> {
- * @link com.coleccione.Cola #agregar agregar(elemento)} </td>
+ * @link com.coleccione.Cola #agregar agregar(elemento)}</td>
  *   <td> {
- * @link #agregarUltimo agregarUltimo(elemento)} </td>
+ * @link #agregarUltimo agregarUltimo(elemento)}</td>
  * </tr>
  * <tr>
  * <td> {
- * @link com.coleccione.Cola #ofrecer ofrecer(elemento)} </td>
+ * @link com.coleccione.Cola #ofrecer ofrecer(elemento)}</td>
  * <td> {
- * @link com.coleccione.Cola #ofrecerUltimo ofertaUltimo(e)} </td>
+ * @link com.coleccione.Cola #ofrecerUltimo ofertaUltimo(e)}</td>
  * </tr>
  * <tr>
  * <td> {
  * @link com.coleccione.Cola #remover remover()} </td>
  * <td> {
- * @link com.coleccione.Cola #removerPrimero removerPrimero()} </td>
+ * @link com.coleccione.Cola #removerPrimero removerPrimero()}</td>
  * </tr>
  * <tr>
  *  <td> {
- * @link com.coleccione.Cola #encuesta encuesta()} </td>
+ * @link com.coleccione.Cola #encuestar encuestar()}</td>
  * <td> {
- * @link #encuestarPrimero encuestarPrimero()} </td>
+ * @link #encuestarPrimero encuestarPrimero()}</td>
  *  </tr>
  * <tr>
  * <td> {
@@ -128,7 +128,7 @@ import java.util.Iterator;
  *  <td> {
  * @link com.coleccione.Cola #ojear ojear()} </td>
  *  <td> {
- * @link #peek peekFirst ()} </td>
+ * @link #ojearprimero ojearPrimero()} </td>
  * </tr>
  * </table>
  *  
@@ -137,51 +137,51 @@ import java.util.Iterator;
  * interfaz debe usarse con preferencia a la clase heredada {@link Stack}.
  * Cuando una deque se usa como una pila, los elementos se empujan y se sacan de
  * la  principio de la deque Los métodos de pila son precisamente equivalentes a
- * {@code Deque} métodos como se indica en la tabla a continuación:  *  
+ * {@code ColaDeque} métodos como se indica en la tabla a continuación
  *
  * <table BELLER CELLPADDING = 3 CELLSPACING = 1>
- * <caption> Comparación de los métodos Stack y Deque </ caption>
+ * <caption> Comparación de los métodos Stack y Deque </caption>
  * <tr>
- * <td ALIGN = CENTER> <b> Método de pila </ b> </ td>
- *   <td ALIGN = CENTER> <b> Método equivalente {@code Deque} </ b> </td>
+ * <td ALIGN = CENTER> <b>Método de pila</b></td>
+ *   <td ALIGN = CENTER> <b>Método equivalente {@code ColaDeque}</b></td>
  * </tr>
  * <tr>
  * <td> {
- * @link #push push (e)} </td>
+ * @link #empujar empujar(elemento)} </td>
  * <td> {
- * @link #addFirst addFirst (e)} </td>
+ * @link #agregarPrimero agregarFirst(elemento)} </td>
  * </tr>
  *  <tr>
  *  <td> {
- * @link # pop pop ()} </td>
+ * @link #quitar quitar()}</td>
  * <td> {
- * @link #removeFirst removeFirst ()} </td>
+ * @link #removerPrimero removerPrimero()}</td>
  * </tr>
  *   <tr>
  *  <td> {
- * @link #peek peek ()} </td>
+ * @link #ojear ojear()}</td>
  * <td> {
- * @link #peekFirst peekFirst ()} </td>
+ * @link #ojearPrimero ojearPrimero()}</td>
  * </tr>
  * </table>
  *
  *  
  * <p>
- * Tenga en cuenta que el método {@link #peek peek} funciona igual de bien
+ * Tenga en cuenta que el método {@link #ojear ojear} funciona igual de bien
  * cuando un deque se usa como una cola o una pila; en cualquier caso, los
  * elementos son dibujado desde el comienzo del deque.  
  * <p>
  * Esta interfaz proporciona dos métodos para eliminar el interior elementos,
- * {@link #removeFirstOccurrence removeFirstOccurrence} y
- * {@link #removeLastOccurrence removeLastOccurrence}.  
+ * {@link #removerPrimeraOcurrencia removerPrimeraOcurrencia} y
+ * {@link #removerPrimeraOcurrencia removerPrimeraOcurrencia}.  
  * <p>
- * A diferencia de la interfaz {@link List}, esta interfaz no proporcionar
+ * A diferencia de la interfaz {@link Lista}, esta interfaz no proporcionar
  * soporte para el acceso indexado a los elementos.  
  * <p>
  * Mientras que las implementaciones de {@code Deque} no son estrictamente
  * necesarias para prohibir la inserción de elementos nulos, son fuertemente
  * Animado a hacerlo. Usuarios de implementaciones de {@code ColaDeque} que
- * permiten que los elementos nulos sean fuertemente alentados <i> no </i> a
+ * permiten que los elementos nulos sean fuertemente alentados <i>no</i> a
  * aproveche la posibilidad de insertar valores nulos. Esto es así porque
  * {@code null} se utiliza como un valor de retorno especial por varios métodos
  *  * para indicar que el deque está vacío.Las implementaciones
@@ -194,7 +194,7 @@ import java.util.Iterator;
  * @code Object}.  
  * <p>
  * Esta interfaz es miembro de
- * <a href = "{@ docRoot} /../ technicalotes / guides / collections / index.html">
+ * <a href ="{@docRoot}/../technicalotes/guides/collections/index.html">
  * Colecciones de Java Marco </a>.
  *
  * @param <E> el tipo de elementos contenidos en esta colección
@@ -217,7 +217,7 @@ public interface ColaDeque<E> extends Cola<E> {
      * @param elemento el elemento para agregar
      *
      * @return {@code true} (según lo especificado
-     * por{@link Coleccion # agregar})
+     * por{@link Coleccion #agregar})
      *
      * @throws IllegalStateException si el elemento no se puede agregar en este
      * tiempo debido a restricciones de capacidad
@@ -236,7 +236,7 @@ public interface ColaDeque<E> extends Cola<E> {
      * hacerlo inmediatamente sin violar las restricciones de capacidad,
      * lanzando una {@code IllegalStateException} si no hay espacio actualmente
      * disponible. Cuando se usa una deque con capacidad restringida,
-     * generalmente es método preferible para usar {@link #offerFirst}.
+     * generalmente es método preferible para usar {@link #ofrecerPrimero}.
      *
      * @param elemento el elemento para agregar
      * @throws IllegalStateException si el elemento no se puedeagregar en este
@@ -273,20 +273,21 @@ public interface ColaDeque<E> extends Cola<E> {
 
     /**
      * Devuelve {@code true} si esta deque contiene el elemento especificado.
-     *       * Más formalmente, devuelve {@code true} si y solo si esta deque
-     * contiene       * al menos un elemento {@code eleemnto} tal que      
+     * Más formalmente, devuelve {@code true} si y solo si esta deque contiene
+     * al menos un elemento {@code eleemnto} tal que      
      *
      * <tt>(objeto == null & nbsp;? & nbsp; elemento == null & nbsp;: & nbsp;
-     * o.equals (elemento))</tt>.       *       * @param objeto elemento cuya
-     * presencia en este deque debe probarse       * @return {@code true} si
-     * esta deque contiene el elemento especificado       * @throws
-     * ClassCastException si el tipo del elemento especificado       * es
-     * incompatible con esta deque       *
+     * o.equals (elemento))</tt>.
+     *
+     * @param objeto elemento cuya presencia en este deque debe probarse
+     * @return {@code true} si esta deque contiene el elemento especificado
+     * @throws ClassCastException si el tipo del elemento especificado es
+     * incompatible con esta deque
      * (<a href="Collection.html#optional-restrictions"> opcional</a>)      
      *
      *
      * @throws NullPointerException si el elemento especificado es nulo y esto
-     *       * deque no permite elementos nulos       *
+     * deque no permite elementos nulos
      * (<a href="Collection.html#optional-restrictions"> opcional</a>)      
      */
     @Override
@@ -576,12 +577,13 @@ public interface ColaDeque<E> extends Cola<E> {
      * objeto.equals (elemento)) </tt>
      * (Si tal elemento existe)Devuelve {@code true} si esto deque contenía el
      * elemento especificado (o equivalentemente, si esto cambio deque como
-     * resultado de la llamada). elemento param elemento para ser eliminado de
-     * esta deque, si está presente
+     * resultado de la llamada).
+     *
+     * @param objeto elemento para ser eliminado de esta deque, si está presente
      *
      * @return {@code true} si se eliminó un elemento como resultado de esta
      * llamada
-     * @throws  ClassCastException si la clase del elemento especificado es
+     * @throws ClassCastException si la clase del elemento especificado es
      * incompatible con esta deque
      */
     public boolean removerUltimaOcurrencia(Object objeto);

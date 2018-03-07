@@ -22,32 +22,32 @@ package com.colecciones;
  * <caption> Resumen de los métodos de cola </ caption>
  * <tr>
  * <td> </td>
- * <td ALIGN = CENTER> <em> lanza una excepción </em> </td>
- *  <td ALIGN = CENTER> <em> Devuelve un valor especial </em> </td>
+ * <td ALIGN = CENTER> <em>Lanza una excepción </em> </td>
+ *  <td ALIGN = CENTER> <em> Devuelve un valor especial </em></td>
  *  </tr>
  * <tr>
- * <td> <b> Insertar </b> </td>
+ * <td> <b>Insertar</b></td>
  * <td> {
  *
  * @param <E>
- * @link Cola #agregar agregar (elemento)} </td>
+ * @link Cola #agregar agregar (elemento)}</td>
  * <td> {
- * @link Cola #ofrecer ofrecer(elemento)} </td>
+ * @link Cola #ofrecer ofrecer(elemento)}</td>
  * </tr>
  * <tr>
- * <td> <b> Eliminar </b> </td>
+ * <td> <b>Eliminar</b></td>
  * <td> {
  *
- * @link Cola # remover remover ()} </td>
+ * @link Cola #remover remover()}</td>
  * <td> {
- * @link Cola # encuestar encuestar()} </td>
+ * @link Cola #encuestar encuestar()}</td>
  * </tr>
  * <tr>
- * <td> <b> Examinar </b> </td>
+ * <td><b>Examinar</b></td>
  * <td> {
- * @link Cola #elemento elemento()} </td>
+ * @link Cola #elemento elemento()}</td>
  * <td> {
- * @link Cola #ojear ojear()} </td>
+ * @link Cola #ojear ojear()}</td>
  * </tr>
  * </table>
  *
@@ -59,9 +59,9 @@ package com.colecciones;
  * natural de los elementos, y colas LIFO (o stacks) que ordenan los elementos
  * LIFO (last-in-first-out). Cualquiera que sea el orden utilizado, la <em>
  * cabeza </em> de la cola es elemento que se eliminaría mediante una llamada a
- * {@link #remover ()} o {@link #poll ()}. En una cola FIFO, todos los elementos
- * nuevos se insertan en la <em> cola </ em> de la cola. Otros tipos de colas
- * pueden usar diferentes reglas de colocación. Cada implementación de
+ * {@link #remover()} o {@link #encuestar()}. En una cola FIFO, todos los
+ * elementos nuevos se insertan en la <em> cola </ em> de la cola. Otros tipos
+ * de colas pueden usar diferentes reglas de colocación. Cada implementación de
  * {@code Queue} debe especificar sus propiedades de ordenamiento.
  * <p>
  * El método {@link #offer offer} inserta un elemento si es posible, de lo
@@ -72,36 +72,36 @@ package com.colecciones;
  * excepcional, por ejemplo, en capacidad fija (o & quot; delimitadas & quot;)
  * colas.
  * <p>
- * Los métodos {@link # remover ()} y {@link #poll ()} eliminar y devolver el
- * jefe de la cola.Exactamente qué elemento se elimina de la cola es un función
- * de la política de pedidos de la cola, que difiere de implementación a
- * implementación. {@code remove ()} y {@code poll ()} métodos difieren solo en
- * su comportamiento cuando el la cola está vacía: el método {@code remover ()}
- * arroja una excepción,  * mientras que el método {@code poll ()} devuelve
- * {@code null}.
+ * Los métodos {@link # remover()} y {@link #pencuestar()} eliminar y devolver
+ * el jefe de la cola.Exactamente qué elemento se elimina de la cola es un
+ * función de la política de pedidos de la cola, que difiere de implementación a
+ * implementación. {@code remover()} y {@code encuestar()} métodos difieren solo
+ * en su comportamiento cuando el la cola está vacía: el método
+ * {@code remover()} arroja una excepción, mientras que el método
+ * {@code encuestar()} devuelve {@code null}.
  * <p>
- * Los métodos {@link #elemento ()} y {@link # peek ()} vuelven, pero lo hacen
- *  * no eliminar, el jefe de la cola. 
+ * Los métodos {@link #elemento()} y {@link # ojear()} vuelven, pero lo hacen no
+ * eliminar, el jefe de la cola. 
  * <p>
- * La interfaz {@code Queue} no define la <i> cola de bloqueo  * métodos </i>,
- * que son comunes en la programación concurrente. Estos métodos, que esperan
- * que aparezcan los elementos o que el espacio esté disponible, son definido en
- * la interfaz {@link java.util.concurrent.BlockingQueue}, que extiende esta
+ * La interfaz {@code Cola} no define la <i>cola de bloqueo métodos</i>, que
+ * son comunes en la programación concurrente. Estos métodos, que esperan que
+ * aparezcan los elementos o que el espacio esté disponible, son definido en la
+ * interfaz {@link java.util.concurrent.BlockingQueue}, que extiende esta
  * interfaz. Las implementaciones de
  * <p>
  * {
  *
- * @code Queue} generalmente no permiten la inserción de {@code null} elementos,
+ * @code Cola} generalmente no permiten la inserción de {@code null} elementos,
  * aunque algunas implementaciones, como {
- * @ LinkedList}, no prohíbe la inserción de {@code null}. Incluso en las
+ * @ ListaEnlazada}, no prohíbe la inserción de {@code null}. Incluso en las
  * implementaciones que lo permiten, {@code null} debería No se insertará en una
  * {@code Queue}, ya que {@code null} también es utilizado como valor de retorno
  * especial por el método {@code poll} para indica que la cola no contiene
  * elementos. Las implementaciones de
  * <p>
  * {
- * @code Queue} generalmente no definen versiones de métodos basadas en
- * elementos {@code iguales} y {
+ * @code Cola} generalmente no definen versiones de métodos basadas en elementos
+ * {@code iguales} y {
  * @code hashCode}, sino heredar las versiones basadas en identidad de la clase
  * {@code Object}, porque la igualdad basada en elementos no es siempre bien
  * definido para colas con los mismos elementos pero diferentes propiedades de
@@ -110,7 +110,7 @@ package com.colecciones;
  * Esta interfaz es miembro de  
  *
  * <a href="{@docRoot}/../technotes/guides/collections/index.html">
- *  * Java Collections Framework </a>.  
+ * Java Collections Framework</a>.  
  *
  *
  *
