@@ -10,10 +10,10 @@ package com.colecciones;
  * @author FABAME
  * @param <E> el tipo de elementos contenidos en esta colección
  */
-public class Pila<E> {
+public class Pila<E> extends ListaVector<E>{
 
     public Pila() {
-
+       
     }
 
 }
