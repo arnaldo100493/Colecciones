@@ -384,6 +384,15 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
             this.crecer(capacidadMinima);
         }
     }
+    
+    public int buscar(Object objeto){
+         int i = this.ultimoIndiceDe(objeto);
+
+        if (i >= 0) {
+            return this.tamanio - i;
+        }
+        return -1;
+    }
 
     /**
      * Devuelve una copia superficial de esta instancia de <tt>
