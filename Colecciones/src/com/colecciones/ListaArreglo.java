@@ -1004,7 +1004,7 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
     @Override
     public <T> T[] paraFormar(T[] arreglo) {
         if (arreglo.length < this.tamanio) {
-            //Crear una nueva matriz del tipo de tiempo de ejecución de a, pero mi contenido:
+            //Crear un nuevo arreglo del tipo de tiempo de ejecución de a, pero mi contenido:
             return (T[]) Arrays.copyOf(this.listadoDatosElemento,
                     this.tamanio,
                     arreglo.getClass());
