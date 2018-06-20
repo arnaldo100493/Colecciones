@@ -11,22 +11,40 @@ package com.colecciones;
  */
 public class Empleado {
 
+    private Long id;
     private String nombre;
     private String apellido;
-    private int salario;
+    private Integer salario;
 
     public Empleado() {
+        this.id = 0L;
         this.nombre = "";
         this.apellido = "";
         this.salario = 0;
     }
 
-    public Empleado(String nombre, String apellido, int salario) {
+    public Empleado(String nombre, String apellido, Integer salario) {
+        this.id = 0L;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.salario = salario;
+    }
+    
+     public Empleado(Long id, String nombre, String apellido, Integer salario) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.salario = salario;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+     
     public String getNombre() {
         return nombre;
     }
@@ -43,16 +61,17 @@ public class Empleado {
         this.apellido = apellido;
     }
 
-    public int getSalario() {
+    public Integer getSalario() {
         return salario;
     }
 
-    public void setSalario(int salario) {
+    public void setSalario(Integer salario) {
         this.salario = salario;
     }
 
     @Override
     public String toString() {
-        return "Empleado{" + "nombre=" + nombre + ", apellido=" + apellido + ", salario=" + salario + '}';
+        return "Empleado{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", salario=" + salario + '}';
     }
+
 }
