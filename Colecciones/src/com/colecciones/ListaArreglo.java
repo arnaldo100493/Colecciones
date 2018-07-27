@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
@@ -255,23 +254,6 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
     }
 
     /**
-     * Agrega el componente especificado al final de este arreglo,      
-     * aumentando su tamaño en uno. La capacidad de este arreglo es aumentado si
-     * su tamaño es mayor que su capacidad.    
-     * <p>
-     * Este método es idéntico en funcionalidad al método
-     * {@link #agregar(Object) agregar(E)} (que es parte de la interfaz
-     * {@link Lista}).
-     *
-     * @param elemento el componente que se agregará      
-     */
-    public void agregarElemento(E elemento) {
-        this.conteoModulo++;
-        this.ayudanteAsegurarCapacidad(this.tamanio + 1);
-        this.listadoDatosElemento[this.tamanio++] = elemento;
-    }
-
-    /**
      * Agrega todos los elementos de la colección especificada al final de esta
      * lista, en el orden en que son devueltos por el iterador de la colección
      * especificada. El comportamiento de esta operación no está definido si la
@@ -370,23 +352,8 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
         this.asegurarCapacidadExplicita(capacidadMinima);
     }
 
-    /**
-     * Esto implementa la semántica no sincronizada de ensureCapacity. Los
-     * métodos sincronizados en esta clase pueden llamar internamente este
-     * método para asegurar la capacidad sin incurrir en el costo de una
-     * sincronización adicional.
-     *
-     * @see #asegurarCapacidad(int)      
-     */
-    private void ayudanteAsegurarCapacidad(int capacidadMinima) {
-        //Código consciente de desbordamiento.
-        if (capacidadMinima - this.listadoDatosElemento.length > 0) {
-            this.crecer(capacidadMinima);
-        }
-    }
-    
-    public int buscar(Object objeto){
-         int i = this.ultimoIndiceDe(objeto);
+    public int buscar(Object objeto) {
+        int i = this.ultimoIndiceDe(objeto);
 
         if (i >= 0) {
             return this.tamanio - i;
@@ -472,25 +439,6 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
     }
 
     /**
-     * Copia los componentes de este arreglo en el arreglo especificadao. El
-     * elemento en el índice {@code k} en este arreglo se copia en componente
-     * {@code k} de {@code unArreglo}.
-     *
-     * @param unArreglo el arreglo en la que se copian los componentes
-     * @throws NullPointerException si el arreglo dado es nulo
-     * @throws IndexOutOfBoundsException si el arreglo especificada no es lo
-     * suficientemente grande como para contener todos los componentes de este
-     * arreglo
-     * @throws ArrayStoreException si un componente de este arreglo no es de un
-     * tipo de tiempo de ejecución que se puede almacenar en el arreglo
-     * especificado
-     * @see #paraFormar(Object[])      
-     */
-    public void copiarEn(Object[] unArreglo) {
-        System.arraycopy(this.listadoDatosElemento, 0, unArreglo, 0, this.tamanio);
-    }
-
-    /**
      * Aumenta la capacidad para garantizar que pueda contener al menos la
      * cantidad de elementos especificados por el argumento de capacidad mínima.
      *
@@ -510,81 +458,6 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
         ganancia:*/
         this.listadoDatosElemento = Arrays.copyOf(this.listadoDatosElemento,
                 capacidadNueva);
-    }
-
-    /**
-     * Devuelve el componente en el índice especificado.   
-     * <p>
-     * Este método es idéntico en funcionalidad al {@link #obtener(int)} método
-     * (que es parte de la interfaz {@link Lista}).
-     *
-     * @param indice un índice en este arreglo
-     * @return el componente en el índice especificado
-     * @throws ArrayIndexOutOfBoundsException si el índice está fuera de rango
-     * ({@code indice < 0 || indice > = tamanio()})      
-     */
-    public E elementoEn(int indice) {
-        if (indice >= this.tamanio) {
-            throw new ArrayIndexOutOfBoundsException(indice + " >= " + this.tamanio);
-        }
-
-        return this.listadoDatosElemento(indice);
-    }
-
-    /**
-     * Devuelve una enumeración de los componentes de este arreglo. los el
-     * objeto devuelto {
-     *
-     * @Enumeración}} generará todos los elementos en este arreglo El primer
-     * elemento generado es el elemento en el índice {@code 0}, luego el
-     * elemento en el índice {@code 1}, y así sucesivamente.
-     * @return una enumeración de los componentes de este arreglo
-     * @see Iterator      
-     */
-    public Enumeration<E> elementos() {
-        return new Enumeration<E>() {//Inicio de la clase anónima Enumeration.
-            //Atributo de la clase anónima Enumeration.
-            int count = 0;
-
-            //Métodos de la clase anónima Enumeration.
-            @Override
-            public boolean hasMoreElements() {
-                return this.count < tamanio;
-            }
-
-            @Override
-            public E nextElement() {
-                synchronized (ListaArreglo.this) {
-                    if (this.count < tamanio) {
-                        return listadoDatosElemento(this.count++);
-                    }
-                }
-                throw new NoSuchElementException("Enumeración del Vector");
-            }
-        };//Fin de la clase anónima Enumeration.
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object object) {
-        return super.equals(object);
-    }
-
-    /**
-     * Indica si el argumento es el índice de un elemento existente.      
-     */
-    private boolean esIndiceElemento(int indice) {
-        return indice >= 0 && indice < this.tamanio;
-    }
-
-    /**
-     * Indica si el argumento es el índice de una posición válida para un
-     * iterador o una operación de agregar.      
-     */
-    private boolean esIndicePosicion(int indice) {
-        return indice >= 0 && indice <= this.tamanio;
     }
 
     /**
@@ -638,57 +511,6 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
         return valorAntiguo;
     }
 
-    /**
-     * Establece el componente en el {@code indice} especificado de este arreglo
-     * para ser el objeto especificado. El componente anterior en ese la
-     * posición se descarta.   
-     * <p>
-     * El índice debe ser un valor mayor o igual que {@code 0} y menor que el
-     * tamaño actual del arreglo.    
-     * <p>
-     * Este método es idéntico en funcionalidad al
-     * {@link #establecer(int, Object) establecer(int, E)} método (que es parte
-     * de la interfaz {@link Lista}). Tenga en cuenta que El método
-     * {@code establecer} invierte el orden de los parámetros, para acercarse
-     * más coincide con el uso del conjunto. Tenga en cuenta también que el
-     * método {@code establecer} devuelve el valor anterior que se almacenó en
-     * la posición especificada.
-     *
-     * @param objeto en que se configurará el componente
-     * @param indice el índice especificado
-     * @throws ArrayIndexOutOfBoundsException si el índice está fuera de rango
-     * ({@code indice < 0 || indice> = tamanio()})      
-     */
-    public void establecerElementoEn(E objeto, int indice) {
-        if (indice >= this.tamanio) {
-            throw new ArrayIndexOutOfBoundsException(indice + " >= "
-                    + this.tamanio);
-        }
-        this.listadoDatosElemento[indice] = objeto;
-    }
-
-    /**
-     * Establece el tamaño de este arreglo. Si el nuevo tamaño es mayor que el
-     * tamaño actual, se agregan nuevos elementos {@code null} al final de el
-     * arreglo. Si el nuevo tamaño es menor que el tamaño actual, todo los
-     * componentes en el índice {@code nuevoTamanio} y mayor se descartan.
-     *
-     * @param nuevoTamanio el nuevo tamaño de este arreglo
-     * @throws ArrayIndexOutOfBoundsException si el nuevo tamaño es negativo
-     *      
-     */
-    public void establecerTamanio(int nuevoTamanio) {
-        this.conteoModulo++;
-        if (nuevoTamanio > this.tamanio) {
-            this.ayudanteAsegurarCapacidad(nuevoTamanio);
-        } else {
-            for (int i = nuevoTamanio; i < this.tamanio; i++) {
-                this.listadoDatosElemento[i] = null;
-            }
-        }
-        this.tamanio = nuevoTamanio;
-    }
-
     @Override
     public void forEach(Consumer<? super E> action) {
         Objects.requireNonNull(action);
@@ -712,14 +534,6 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
         return (capacidadMinima > TAMANIO_MAXIMO_ARREGLO)
                 ? Integer.MAX_VALUE
                 : TAMANIO_MAXIMO_ARREGLO;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return super.hashCode();
     }
 
     /**
@@ -758,78 +572,6 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
             }
         }
         return -1;
-    }
-
-    /**
-     * Devuelve el índice de la primera aparición del elemento especificado en
-     * este arreglo, buscando hacia adelante desde {@code indice}, o devuelve -1
-     * si el elemento no se encuentra. Más formalmente, devuelve el índice más
-     * bajo {@code i} tal que
-     * <tt>(i & nbsp; & gt; = & nbsp; indice & nbsp; & amp;; & nbsp; (objeto ==
-     * null & nbsp;? & nbsp; obtener(i) == null & nbsp;: & nbsp; objeto.equals
-     * (obtener (i))) )</tt>, o -1 si no hay tal índice.
-     *
-     * @param objeto elemento para buscar
-     * @param indice índice para comenzar a buscar desde
-     * @return el índice de la primera aparición del elemento en este vector en
-     * la posición {@code indice} o posterior en el vector;{@code -1} si el
-     * elemento no se encuentra.
-     * @throws IndexOutOfBoundsException si el índice especificado es negativo
-     * @see Object equals(Object)      
-     */
-    public int indiceDe(Object objeto, int indice) {
-        if (objeto == null) {
-            for (int i = indice; i < this.tamanio; i++) {
-                if (this.listadoDatosElemento[i] == null) {
-                    return i;
-                }
-            }
-        } else {
-            for (int i = indice; i < this.tamanio; i++) {
-                if (objeto.equals(this.listadoDatosElemento[i])) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Inserta el objeto especificado como un componente en este arreglo en el
-     * especificado {@code indice}. Cada componente en este arreglo con un
-     * índice mayor o igual al {@code indice} especificado es se desplazó hacia
-     * arriba para tener un índice uno mayor que el valor que tenía previamente.
-     *      
-     * <p>
-     * El índice debe ser un valor mayor o igual que {@code 0} y menor o igual
-     * que el tamaño actual del vector. (Si el índice es igual al tamaño actual
-     * del arreglo, el nuevo elemento se adjunta a la ListaArreglo.)      
-     * <p>
-     * Este método es idéntico en funcionalidad al
-     * {@link #agregar(int, Object) agregar(int, E)} método (que es parte de la
-     * interfaz {@link Lista}). Tenga en cuenta que el método {@code agregar}
-     * invierte el orden de los parámetros, para acercarse más coincide con el
-     * uso del conjunto.
-     *
-     * @param objeto el componente para insertar
-     * @param indice donde insertar el nuevo componente
-     * @throws ArrayIndexOutOfBoundsException si el índice está fuera de
-     * rango({@code indice < 0 || indice > tamanio()})
-     */
-    public void insertarElementoEn(Object objeto, int indice) {
-        this.conteoModulo++;
-        if (indice > this.tamanio) {
-            throw new ArrayIndexOutOfBoundsException(indice
-                    + " > " + this.tamanio);
-        }
-        this.ayudanteAsegurarCapacidad(this.tamanio + 1);
-        System.arraycopy(this.listadoDatosElemento,
-                indice,
-                this.listadoDatosElemento,
-                indice + 1,
-                this.tamanio - indice);
-        this.listadoDatosElemento[indice] = objeto;
-        this.tamanio++;
     }
 
     /**
@@ -941,7 +683,7 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
     @Override
     public E obtener(int indice) {
         this.verificarRango(indice);
-        return listadoDatosElemento(indice);
+        return this.listadoDatosElemento(indice);
     }
 
     @Override
@@ -1022,17 +764,48 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
     }
 
     /**
-     * Devuelve el primer componente (el elemento en el índice{@code 0}) de este
-     * erreglo
+     * Devuelve un arreglo que contiene todos los elementos de esta lista en la
+     * secuencia correcta (del primer al último elemento); el tipo de tiempo de
+     * ejecución de la arreglo devuelta es el del arreglo especificado. Si la
+     * lista se ajusta al arreglo especificado, se devuelve allí. De lo
+     * contrario, se asigna un nuevo arreglo con el tipo de tiempo de ejecución
+     * del arreglo especificado y el tamaño de esta lista.
+     * <p>
+     * Si la lista cabe en el arreglo especificado con espacio de sobra (es
+     * decir, el arreglo tiene más elementos que la lista), el elemento en el
+     * arreglo inmediatamente después del final de la colección se establece en
+     * <tt>null</tt> . (Esto es útil para determinar la longitud de la lista
+     * <i>solamente</i> si la persona que llama sabe que la lista no contiene
+     * ningún elemento nulo).
      *
-     * @return el primer componente de este arreglo
-     * @throws NoSuchElementException si este arreglo no tiene componentes      
+     * @param <T> el tipo de elementos contenidos en este arreglo
+     * @param arreglo el arreglo en la que se almacenarán los elementos de la
+     * lista, si es lo suficientemente grande; de lo contrario, se asigna un
+     * nuevo arreglo del mismo tipo de tiempo de ejecución para este fin
+     * @return un arreglo que contiene los elementos de la lista
+     * @throws ArrayStoreException si el tipo de tiempo de ejecución del arreglo
+     * especificado no es un supertipo del tipo de tiempo de ejecución de cada
+     * elemento en esta lista
+     * @throws NullPointerException si el arreglo especificado es nulo
      */
-    public E primerElemento() {
-        if (this.tamanio == 0) {
-            throw new NoSuchElementException();
+    @SuppressWarnings("unchecked")
+    public <T> T[][] paraFormar(T[][] arreglo) {
+        if (arreglo.length < this.tamanio) {
+            //Crear un nuevo arreglo del tipo de tiempo de ejecución de a, pero mi contenido:
+            return (T[][]) Arrays.copyOf(this.listadoDatosElemento,
+                    this.tamanio,
+                    arreglo.getClass());
+
         }
-        return this.listadoDatosElemento(0);
+        System.arraycopy(this.listadoDatosElemento,
+                0,
+                arreglo,
+                0,
+                this.tamanio);
+        if (arreglo.length > this.tamanio) {
+            arreglo[this.tamanio][this.tamanio] = null;
+        }
+        return arreglo;
     }
 
     /**
@@ -1124,68 +897,6 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
             }
         }
         return false;
-    }
-
-    /**
-     * Elimina la primera aparición (más indexada) del argumento de este arreglo
-     * Si el objeto se encuentra en este arreglo, cada componente en el arregñp
-     * con un índice mayor o igual al el índice del objeto se desplaza hacia
-     * abajo para tener un índice más pequeño que el valor que tenía
-     * previamente.    
-     * <p>
-     * Este método es idéntico en funcionalidad al {@link #remover(Objeto)}
-     * método (que es parte del interfaz {@link Lista}).
-     *
-     * @param objeto el componente que se eliminará
-     * @return {@code true} si el argumento era un componente de este arreglo;
-     * {@code false} de lo contrario.      
-     */
-    public boolean removerElemento(Object objeto) {
-        this.conteoModulo++;
-        int i = this.indiceDe(objeto);
-        if (i >= 0) {
-            this.removerElementoEn(i);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Elimina el componente en el índice especificado. Cada componente en este
-     * arreglo con un índice mayor o igual al especificado {@code indice} se
-     * desplaza hacia abajo para tener un índice uno más pequeño que el valor
-     * que tenía anteriormente. El tamaño de este arreglo se reduce en
-     * {@code 1}.     
-     * <p>
-     * El índice debe ser un valor mayor o igual que {@code 0}y menor que el
-     * tamaño actual del arreglo.      
-     * <p>
-     * Este método es idéntico en funcionalidad al método
-     * {@link #remover(int)}(que es parte de la interfaz {@link Lista}). Tenga
-     * en cuenta que el método {@code remover} devuelve el valor anterior que
-     * estaba almacenado en el posición especificada.
-     *
-     * @param indice el índice del objeto para eliminar
-     * @throws ArrayIndexOutOfBoundsException si el índice está fuera de rango
-     * ({@code indice < 0 || indice > = tamanio()})      
-     */
-    public void removerElementoEn(int indice) {
-        this.conteoModulo++;
-        if (indice >= this.tamanio) {
-            throw new ArrayIndexOutOfBoundsException(indice + " >= "
-                    + this.tamanio);
-        } else if (indice < 0) {
-            throw new ArrayIndexOutOfBoundsException(indice);
-        }
-        int j = this.tamanio - indice - 1;
-        if (j > 0) {
-            System.arraycopy(this.listadoDatosElemento, indice + 1,
-                    this.listadoDatosElemento, indice, j);
-        }
-        this.tamanio--;
-        this.listadoDatosElemento[this.tamanio] = null;
-        /* Deja que gc haga su trabajo*/
-
     }
 
     private boolean removerLote(Coleccion<?> coleccion, boolean complemento) {
@@ -1338,23 +1049,6 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
     }
 
     /**
-     * Elimina todos los componentes de este arreglo y establece su tamaño en
-     * cero.   
-     * <p>
-     * Este método es idéntico en funcionalidad al {@link #limpiar} método (que
-     * es parte de la interfaz {@link Lista}).      
-     */
-    public void removerTodosLosElementos() {
-        this.conteoModulo++;
-        //Deja que gc haga su trabajo.
-        for (int i = 0; i < this.tamanio; i++) {
-            this.listadoDatosElemento[i] = null;
-        }
-
-        this.tamanio = 0;
-    }
-
-    /**
      * Crea un <em><a href="Spliterator.html#binding"> enlace de último momento
      * </a></em> y <em>Fallar rápido</em> {@link Spliterator} sobre los
      * elementos en esta lista.
@@ -1409,15 +1103,6 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
         return new SubLista(this, 0, desdeIndice, hastaIndice);
     }
 
-    @SuppressWarnings("unchecked")
-    private ListaArreglo<E> superClone() {
-        try {
-            return (ListaArreglo<E>) super.clone();
-        } catch (CloneNotSupportedException ex) {
-            throw new InternalError(ex);
-        }
-    }
-
     static void verificarRangoSubLista(int desdeIndice, int hastaIndice,
             int tamanio) {
         if (desdeIndice < 0) {
@@ -1443,34 +1128,12 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    /**
-     * Devuelve el último componente del arreglo.
-     *
-     * @return el último componente del arreglo, es decir, el componente en el
-     * índice <code>tamanio() & nbsp; - & nbsp; 1</code>.
-     * @throws NoSuchElementException si este vector está vacío      
-     */
-    public E ultimoElemento() {
-        if (this.tamanio == 0) {
-            throw new NoSuchElementException();
-        }
-        return this.listadoDatosElemento(this.tamanio - 1);
-    }
-
-    /**
      * Devuelve el índice de la última aparición del elemento especificado en
      * esta lista, o -1 si esta lista no contiene el elemento. Más formalmente,
-     * devuelve el índice más alto <tt>i</tt>
-     * tal que <tt>(objeto == null & nbsp;? & nbsp; obtener(i) == null & nbsp;:
-     * & nbsp; objeto.equals(obtener (i)))</tt>, o -1 si no hay tal índice.
-     *      
+     * devuelve el índice más alto <tt> i
+     * </ tt> tal que <tt> (objeto == null & nbsp;? & nbsp; obtener(i) == null &
+     * nbsp;: & nbsp; objeto.equals (obtener(i))) </ tt>, o -1 si no hay tal
+     * índice.      
      */
     @Override
     public int ultimoIndiceDe(Object objeto) {
@@ -1488,56 +1151,6 @@ public class ListaArreglo<E> extends ListaAbstracta<E>
             }
         }
         return -1;
-    }
-
-    /**
-     * Devuelve el índice de la última aparición del elemento especificado en
-     * este arreglo, buscando hacia atrás desde {@code indice}, o devuelve -1 si
-     * el elemento no se encuentra. Más formalmente, devuelve el índice más alto
-     * {@code i} tal que
-     * <tt>(i & nbsp; & lt; = & nbsp; index & nbsp; & amp;; & nbsp; (objeto ==
-     * null & nbsp;? & nbsp; obtener(i) == null & nbsp;: & nbsp;
-     * objeto.equals(obtener (i))))</tt>, o -1 si no hay tal índice.
-     *
-     * @param objeto elemento para buscar
-     * @param indice índice para comenzar a buscar hacia atrás desde
-     * @return el índice de la última aparición del elemento en posición menor o
-     * igual que {@code indice} en este arreglo; -1 si el elemento no se
-     * encuentra.
-     * @throws IndexOutOfBoundsException si el índice especificado es mayor
-     * igual o igual al tamaño actual de este arreglo      
-     */
-    public int ultimoIndiceDe(Object objeto, int indice) {
-        if (indice >= this.tamanio) {
-            throw new IndexOutOfBoundsException(indice + " >= " + this.tamanio);
-        }
-
-        if (objeto == null) {
-            for (int i = indice; i >= 0; i--) {
-                if (this.listadoDatosElemento[i] == null) {
-                    return i;
-                }
-            }
-        } else {
-            for (int i = indice; i >= 0; i--) {
-                if (objeto.equals(this.listadoDatosElemento[i])) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    private void verificarIndiceElemento(int indice) {
-        if (!this.esIndiceElemento(indice)) {
-            throw new IndexOutOfBoundsException(this.mostrarMensajeFueraDeLosLimites(indice));
-        }
-    }
-
-    private void verificarIndicePosicion(int indice) {
-        if (!this.esIndicePosicion(indice)) {
-            throw new IndexOutOfBoundsException(this.mostrarMensajeFueraDeLosLimites(indice));
-        }
     }
 
     /**

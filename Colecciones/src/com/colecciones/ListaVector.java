@@ -360,6 +360,15 @@ public class ListaVector<E> extends ListaAbstracta<E>
         }
     }
 
+    public synchronized int buscar(Object objeto) {
+        int i = this.ultimoIndiceDe(objeto);
+
+        if (i >= 0) {
+            return this.conteoElemento - i;
+        }
+        return -1;
+    }
+
     /**
      * Devuelve la capacidad actual de este vector.
      *
@@ -563,21 +572,6 @@ public class ListaVector<E> extends ListaAbstracta<E>
     @Override
     public synchronized boolean equals(Object object) {
         return super.equals(object);
-    }
-
-    /**
-     * Indica si el argumento es el índice de un elemento existente.      
-     */
-    private boolean esIndiceElemento(int indice) {
-        return indice >= 0 && indice < this.conteoElemento;
-    }
-
-    /**
-     * Indica si el argumento es el índice de una posición válida para un
-     * iterador o una operación de agregar.      
-     */
-    private boolean esIndicePosicion(int indice) {
-        return indice >= 0 && indice <= this.conteoElemento;
     }
 
     /**
@@ -862,16 +856,6 @@ public class ListaVector<E> extends ListaAbstracta<E>
     }
 
     /**
-     * Construye un mensaje de detalle de IndexOutOfBoundsException. De las
-     * muchas refactorizaciones posibles del código de manejo de errores, este
-     * "perfilado" funciona mejor con máquinas virtuales tanto de servidor como
-     * de cliente.      
-     */
-    private String mostrarMensajeFueraDeLosLimites(int indice) {
-        return "Índice: " + indice + ", Tamaño: " + this.conteoElemento;
-    }
-
-    /**
      * Devuelve el elemento en la posición especificada en este Vector.
      *
      * @param indice índice del elemento a devolver
@@ -956,6 +940,51 @@ public class ListaVector<E> extends ListaAbstracta<E>
             arreglo[this.conteoElemento] = null;
         }
 
+        return arreglo;
+    }
+    
+     /**
+     * Devuelve un arreglo que contiene todos los elementos de esta lista en la
+     * secuencia correcta (del primer al último elemento); el tipo de tiempo de
+     * ejecución de la arreglo devuelta es el del arreglo especificado. Si la
+     * lista se ajusta al arreglo especificado, se devuelve allí. De lo
+     * contrario, se asigna un nuevo arreglo con el tipo de tiempo de ejecución
+     * del arreglo especificado y el tamaño de esta lista.
+     * <p>
+     * Si la lista cabe en el arreglo especificado con espacio de sobra (es
+     * decir, el arreglo tiene más elementos que la lista), el elemento en el
+     * arreglo inmediatamente después del final de la colección se establece en
+     * <tt>null</tt> . (Esto es útil para determinar la longitud de la lista
+     * <i>solamente</i> si la persona que llama sabe que la lista no contiene
+     * ningún elemento nulo).
+     *
+     * @param <T> el tipo de elementos contenidos en este arreglo
+     * @param arreglo el arreglo en la que se almacenarán los elementos de la
+     * lista, si es lo suficientemente grande; de lo contrario, se asigna un
+     * nuevo arreglo del mismo tipo de tiempo de ejecución para este fin
+     * @return un arreglo que contiene los elementos de la lista
+     * @throws ArrayStoreException si el tipo de tiempo de ejecución del arreglo
+     * especificado no es un supertipo del tipo de tiempo de ejecución de cada
+     * elemento en esta lista
+     * @throws NullPointerException si el arreglo especificado es nulo
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T[][] paraFormar(T[][] arreglo) {
+        if (arreglo.length < this.conteoElemento) {
+            //Crear un nuevo arreglo del tipo de tiempo de ejecución de a, pero mi contenido:
+            return (T[][]) Arrays.copyOf(this.listadoDatosElemento,
+                    this.conteoElemento,
+                    arreglo.getClass());
+
+        }
+        System.arraycopy(this.listadoDatosElemento,
+                0,
+                arreglo,
+                0,
+                this.conteoElemento);
+        if (arreglo.length > this.conteoElemento) {
+            arreglo[this.conteoElemento][this.conteoElemento] = null;
+        }
         return arreglo;
     }
 
@@ -1114,56 +1143,6 @@ public class ListaVector<E> extends ListaAbstracta<E>
         this.conteoElemento--;
         this.listadoDatosElemento[this.conteoElemento] = null;
         /* Deja que gc haga su trabajo*/
-    }
-
-    private synchronized boolean removerLote(Coleccion<?> coleccion, boolean complemento) {
-        Object[] listadoDatosElemento = this.listadoDatosElemento;
-        int r = 0, w = 0;
-        boolean modificado = false;
-        try {
-            for (; r < this.conteoElemento; r++) {
-                if (coleccion.contiene(this.listadoDatosElemento[r])
-                        == complemento) {
-                    this.listadoDatosElemento[w++]
-                            = this.listadoDatosElemento[r];
-                }
-            }
-        } finally {
-            /*Preservar la compatibilidad de comportamiento con 
-            ColeccionAbstracta*,*/
-            //incluso si coleccion.contiene() lanza.
-            if (r != this.conteoElemento) {
-                System.arraycopy(listadoDatosElemento, r, listadoDatosElemento,
-                        w, this.conteoElemento - r);
-                w += this.conteoElemento - r;
-            }
-            if (w != this.conteoElemento) {
-                //Limpia para dejar que GC haga su trabajo.
-                for (int i = w; i < this.conteoElemento; i++) {
-                    listadoDatosElemento[i] = null;
-                }
-                this.conteoModulo += this.conteoElemento - w;
-                this.conteoElemento = w;
-                modificado = true;
-            }
-        }
-        return modificado;
-    }
-
-    /*
-      * Método de eliminación privada que omite la verificación de límites y no
-      * devuelve el valor eliminado.
-      */
-    private synchronized void removerRapido(int indice) {
-        this.conteoModulo++;
-        int numeroMovido = this.conteoElemento - indice - 1;
-        if (numeroMovido > 0) {
-            System.arraycopy(this.listadoDatosElemento, indice + 1,
-                    this.listadoDatosElemento, indice, numeroMovido);
-        }
-        this.listadoDatosElemento[--this.conteoElemento] = null;
-        /*Limpia para dejar 
-        que GC haga su trabajo.*/
     }
 
     /**
@@ -1337,15 +1316,6 @@ public class ListaVector<E> extends ListaAbstracta<E>
         return (Lista<E>) Collections.synchronizedList((List<E>) super.subLista(desdeIndice, hastaIndice));
     }
 
-    @SuppressWarnings("unchecked")
-    private ListaVector<E> superClone() {
-        try {
-            return (ListaVector<E>) super.clone();
-        } catch (CloneNotSupportedException ex) {
-            throw new InternalError(ex);
-        }
-    }
-
     /**
      * Devuelve la cantidad de elementos en este vector.
      *
@@ -1431,56 +1401,6 @@ public class ListaVector<E> extends ListaAbstracta<E>
             }
         }
         return -1;
-    }
-
-    private void verificarIndiceElemento(int indice) {
-        if (!this.esIndiceElemento(indice)) {
-            throw new IndexOutOfBoundsException(this.mostrarMensajeFueraDeLosLimites(indice));
-        }
-    }
-
-    private void verificarIndicePosicion(int indice) {
-        if (!this.esIndicePosicion(indice)) {
-            throw new IndexOutOfBoundsException(this.mostrarMensajeFueraDeLosLimites(indice));
-        }
-    }
-
-    /**
-     * Verifica si el índice dado está dentro del rango. Si no, lanza un
-     * apropiado excepción en tiempo de ejecución. Este método no verifica si el
-     * índice es negativo: siempre se usa inmediatamente antes del acceso a un
-     * arreglo, que arroja una ArrayIndexOutOfBoundsException si el índice es
-     * negativo.      
-     */
-    private void verificarRango(int indice) {
-        if (indice >= this.conteoElemento) {
-            throw new IndexOutOfBoundsException(
-                    this.mostrarMensajeFueraDeLosLimites(indice));
-        }
-    }
-
-    /**
-     * Una versión de verificarRango utilizada por agregar y agregarTodo.      
-     */
-    private void verificarRangoParaAgregar(int indice) {
-        if (indice > this.conteoElemento || indice < 0) {
-            throw new IndexOutOfBoundsException(
-                    this.mostrarMensajeFueraDeLosLimites(indice));
-        }
-    }
-
-    static void verificarRangoSubLista(int desdeIndice, int hastaIndice,
-            int tamanio) {
-        if (desdeIndice < 0) {
-            throw new IndexOutOfBoundsException("desdeIndice = " + desdeIndice);
-        }
-        if (hastaIndice > tamanio) {
-            throw new IndexOutOfBoundsException("hastaIndice = " + hastaIndice);
-        }
-        if (desdeIndice > hastaIndice) {
-            throw new IllegalArgumentException("desdeIndice(" + desdeIndice
-                    + ") > hastaIndice(" + hastaIndice + ")");
-        }
     }
 
     //Clase interna Itr.
@@ -1758,308 +1678,6 @@ public class ListaVector<E> extends ListaAbstracta<E>
                             lo,
                             this.index = mid,
                             this.expectedModCount);
-        }
-    }
-
-    //Clase interna SubLista.
-    private class SubLista extends ListaAbstracta<E> implements RandomAccess {
-
-        //Atributos de la clase interna SubLista.
-        private final ListaAbstracta<E> padre;
-        private final int compensacionDePadres;
-        private final int compensacion;
-        int tamanio;
-
-        //Constructores de la clase interna SubLista.
-        SubLista() {
-            this.padre = null;
-            this.compensacionDePadres = 0;
-            this.compensacion = 0;
-            this.tamanio = 0;
-            this.conteoModulo = 0;
-        }
-
-        SubLista(ListaAbstracta<E> padre, int compensacion, int desdeIndice,
-                int hastaIndice) {
-            this.padre = padre;
-            this.compensacionDePadres = desdeIndice;
-            this.compensacion = compensacion + desdeIndice;
-            this.tamanio = hastaIndice - desdeIndice;
-            this.conteoModulo = ListaVector.this.conteoModulo;
-        }
-
-        //Métodos de la clase interna SubLista.
-        @Override
-        public void agregar(int indice, E elemento) {
-            this.verificarRangoParaAgregar(indice);
-            this.verificarParaMercantilizacion();
-            this.padre.agregar(this.compensacionDePadres + indice, elemento);
-            this.conteoModulo = this.padre.conteoModulo;
-            this.tamanio++;
-        }
-
-        @Override
-        public boolean agregarTodo(Coleccion<? extends E> coleccion) {
-            return this.agregarTodo(this.tamanio, coleccion);
-        }
-
-        @Override
-        public boolean agregarTodo(int indice, Coleccion<? extends E> coleccion) {
-            this.verificarRangoParaAgregar(indice);
-            int tamanioColeccion = coleccion.tamanio();
-            if (tamanioColeccion == 0) {
-                return false;
-            }
-
-            this.verificarParaMercantilizacion();
-            this.padre.agregarTodo(this.compensacionDePadres
-                    + indice, coleccion);
-            this.conteoModulo = this.padre.conteoModulo;
-            this.tamanio += tamanioColeccion;
-            return true;
-        }
-
-        @Override
-        public E establecer(int indice, E elemento) {
-            this.verificarRango(indice);
-            this.verificarParaMercantilizacion();
-            E valorAntiguo = ListaVector.this.listadoDatosElemento(
-                    this.compensacion + indice);
-            ListaVector.this.listadoDatosElemento[this.compensacion + indice]
-                    = elemento;
-            return valorAntiguo;
-        }
-
-        @Override
-        public String imprimir() {
-            return new ListaArreglo<>().imprimir();
-        }
-
-        @Override
-        public Iterator<E> iterator() {
-            return this.listIterator();
-        }
-
-        @Override
-        public ListIterator<E> listIterator(final int indice) {
-            this.verificarParaMercantilizacion();
-            this.verificarRangoParaAgregar(indice);
-            final int offset = this.compensacion;
-
-            return new ListIterator<E>() {/*Inicio de la clase anónima interna 
-                ListIterator de la clase interna SubLista.*/
-
- /*Atributos de la clase anónima interna ListIterator de la clase
-                interna SubLista.*/
-                int cursor = indice;
-                int lastRet = -1;
-                int expectedModCount = ListaVector.this.conteoModulo;
-
-                /*Métodos de la clase anónima interna ListIterator de la clase
-                interna SubLista.*/
-                @Override
-                public void add(E e) {
-                    this.checkForComodification();
-
-                    try {
-                        int i = this.cursor;
-                        ListaVector.SubLista.this.agregar(i, e);
-                        this.cursor = i + 1;
-                        this.lastRet = -1;
-                        this.expectedModCount = ListaVector.this.conteoModulo;
-                    } catch (IndexOutOfBoundsException ex) {
-                        throw new ConcurrentModificationException();
-                    }
-                }
-
-                final void checkForComodification() {
-                    if (this.expectedModCount != ListaVector.this.conteoModulo) {
-                        throw new ConcurrentModificationException();
-                    }
-                }
-
-                @SuppressWarnings("unchecked")
-                @Override
-                public void forEachRemaining(Consumer<? super E> consumer) {
-                    Objects.requireNonNull(consumer);
-                    final int size = ListaVector.SubLista.this.tamanio;
-                    int i = this.cursor;
-                    if (i >= size) {
-                        return;
-                    }
-                    final Object[] elementData
-                            = ListaVector.this.listadoDatosElemento;
-                    if (offset + i >= elementData.length) {
-                        throw new ConcurrentModificationException();
-                    }
-                    while (i != size && conteoModulo == this.expectedModCount) {
-                        consumer.accept((E) elementData[offset + (i++)]);
-                    }
-                    /*Actualizar una vez al final de la iteración para reducir 
-                    el tráfico de escritura de montón.*/
-                    this.lastRet = this.cursor = i;
-                    checkForComodification();
-                }
-
-                @Override
-                public boolean hasNext() {
-                    return this.cursor != ListaVector.SubLista.this.tamanio;
-                }
-
-                @Override
-                public boolean hasPrevious() {
-                    return this.cursor != 0;
-                }
-
-                @SuppressWarnings("unchecked")
-                @Override
-                public E next() {
-                    checkForComodification();
-                    int i = this.cursor;
-                    if (i >= ListaVector.SubLista.this.tamanio) {
-                        throw new NoSuchElementException();
-                    }
-                    Object[] elementData
-                            = ListaVector.this.listadoDatosElemento;
-                    if (offset + i >= elementData.length) {
-                        throw new ConcurrentModificationException();
-                    }
-                    this.cursor = i + 1;
-                    return (E) elementData[offset + (this.lastRet = i)];
-                }
-
-                @Override
-                public int nextIndex() {
-                    return this.cursor;
-                }
-
-                @SuppressWarnings("unchecked")
-                @Override
-                public E previous() {
-                    this.checkForComodification();
-                    int i = this.cursor - 1;
-                    if (i < 0) {
-                        throw new NoSuchElementException();
-                    }
-                    Object[] elementData
-                            = ListaVector.this.listadoDatosElemento;
-                    if (offset + i >= elementData.length) {
-                        throw new ConcurrentModificationException();
-                    }
-                    this.cursor = i;
-                    return (E) elementData[offset + (this.lastRet = i)];
-                }
-
-                @Override
-                public int previousIndex() {
-                    return this.cursor - 1;
-                }
-
-                @Override
-                public void remove() {
-                    if (this.lastRet < 0) {
-                        throw new IllegalStateException();
-                    }
-                    this.checkForComodification();
-
-                    try {
-                        ListaVector.SubLista.this.remover(this.lastRet);
-                        this.cursor = this.lastRet;
-                        this.lastRet = -1;
-                        this.expectedModCount = ListaVector.this.conteoModulo;
-                    } catch (IndexOutOfBoundsException ex) {
-                        throw new ConcurrentModificationException();
-                    }
-                }
-
-                @Override
-                public void set(E e) {
-                    if (this.lastRet < 0) {
-                        throw new IllegalStateException();
-                    }
-                    this.checkForComodification();
-
-                    try {
-                        ListaVector.this.establecer(offset + this.lastRet, e);
-                    } catch (IndexOutOfBoundsException ex) {
-                        throw new ConcurrentModificationException();
-                    }
-                }
-            };/*Fin de la clase anónima interna ListIterator de la clase interna 
-            SubLista.*/
-        }
-
-        private String mostrarMensajeFueraDeLosLimites(int indice) {
-            return "Índice: " + indice + ", Tamaño: " + this.tamanio;
-        }
-
-        @Override
-        public E obtener(int indice) {
-            this.verificarRango(indice);
-            this.verificarParaMercantilizacion();
-            return ListaVector.this.listadoDatosElemento(this.compensacion
-                    + indice);
-        }
-
-        @Override
-        public E remover(int indice) {
-            this.verificarRango(indice);
-            this.verificarParaMercantilizacion();
-            E resultado = this.padre.remover(this.compensacionDePadres
-                    + indice);
-            this.conteoModulo = this.padre.conteoModulo;
-            this.tamanio--;
-            return resultado;
-        }
-
-        @Override
-        protected void removerRango(int desdeIndice, int hastaIndice) {
-            this.verificarParaMercantilizacion();
-            this.padre.removerRango(this.compensacionDePadres + desdeIndice,
-                    this.compensacionDePadres + hastaIndice);
-            this.conteoModulo = this.padre.conteoModulo;
-            this.tamanio -= hastaIndice - desdeIndice;
-        }
-
-        @Override
-        public Spliterator<E> spliterator() {
-            this.verificarParaMercantilizacion();
-            return new ListaVectorSpliterator<E>(ListaVector.this, ListaVector.this.listadoDatosElemento,
-                    this.compensacion, this.compensacion + this.tamanio,
-                    this.conteoModulo);
-        }
-
-        @Override
-        public Lista<E> subLista(int desdeIndice, int hastaIndice) {
-            verificarRangoSubLista(desdeIndice, hastaIndice, this.tamanio);
-            return new ListaVector.SubLista(this, this.compensacion,
-                    desdeIndice, hastaIndice);
-        }
-
-        @Override
-        public int tamanio() {
-            this.verificarParaMercantilizacion();
-            return this.tamanio;
-        }
-
-        private void verificarParaMercantilizacion() {
-            if (ListaVector.this.conteoModulo != this.conteoModulo) {
-                throw new ConcurrentModificationException();
-            }
-        }
-
-        private void verificarRango(int indice) {
-            if (indice < 0 || indice >= this.tamanio) {
-                throw new IndexOutOfBoundsException(
-                        this.mostrarMensajeFueraDeLosLimites(indice));
-            }
-        }
-
-        private void verificarRangoParaAgregar(int indice) {
-            if (indice < 0 || indice > this.tamanio) {
-                throw new IndexOutOfBoundsException(
-                        this.mostrarMensajeFueraDeLosLimites(indice));
-            }
         }
     }
 }

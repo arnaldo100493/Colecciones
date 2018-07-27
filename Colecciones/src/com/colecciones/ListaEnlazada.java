@@ -179,7 +179,8 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
      * en cuenta que esto ocurrirá si la colección especificada es esta lista, y
      * no es vacía.)
      *
-     * @param colección c que contiene elementos para agregar a esta lista
+     * @param coleccion colección que contiene elementos para agregar a esta
+     * lista
      * @return {@code true} si esta lista cambió como resultado dela llamada
      * @throws NullPointerException si la colección especificada es nula      
      */
@@ -258,6 +259,15 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
         this.enlazarUltimo(elemento);
     }
 
+    public int buscar(Object objeto) {
+        int i = this.ultimoIndiceDe(objeto);
+
+        if (i >= 0) {
+            return this.tamanio - i;
+        }
+        return -1;
+    }
+
     /**
      * Devuelve una copia superficial de esta {
      *
@@ -324,23 +334,6 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
     @Override
     public boolean contiene(Object objeto) {
         return this.indiceDe(objeto) != -1;
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Esta implementación itera sobre la colección especificada, revisando cada
-     * elemento devuelto por el iterador para ver si está contenido en esta
-     * colección. Si todos los elementos son tan se devuelve <tt>true</tt>, de
-     * lo contrario <tt>false</tt>.
-     *
-     * @throws ClassCastException {@inheritDoc}
-     * @throws NullPointerException {@inheritDoc}
-     * @see #contiene(Object)      
-     */
-    @Override
-    public boolean contieneTodo(Coleccion<?> coleccion) {
-        return super.contieneTodo(coleccion);
     }
 
     /**
@@ -499,14 +492,6 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object object) {
-        return super.equals(object);
-    }
-
-    /**
      * Indica si el argumento es el índice de un elemento existente.      
      */
     private boolean esIndiceElemento(int indice) {
@@ -564,14 +549,6 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String imprimir() {
         String s = "";
         for (int i = 0; i < this.tamanio; i++) {
@@ -595,42 +572,6 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
     @Override
     public int indiceDe(Object objeto) {
         int indice = 0;
-        if (objeto == null) {
-            for (Nodo<E> nodo = this.primero; nodo != null; nodo = nodo.siguiente) {
-                if (nodo.elemento == null) {
-                    return indice;
-                }
-                indice++;
-            }
-        } else {
-            for (Nodo<E> nodo = this.primero; nodo != null; nodo = nodo.siguiente) {
-                if (objeto.equals(nodo.elemento)) {
-                    return indice;
-                }
-                indice++;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Devuelve el índice de la primera aparición del elemento especificado en
-     * esta lista enlazada, buscando hacia adelante desde {@code indice}, o
-     * devuelve -1 si el elemento no se encuentra. Más formalmente, devuelve el
-     * índice más bajo {@code i} tal que
-     * <tt>(i & nbsp; & gt; = & nbsp; indice & nbsp; & amp;; & nbsp; (objeto ==
-     * null & nbsp;? & nbsp; obtener(i) == null & nbsp;: & nbsp; objeto.equals
-     * (obtener (i))) )</tt>, o -1 si no hay tal índice.
-     *
-     * @param objeto elemento para buscar
-     * @param indice índice para comenzar a buscar desde
-     * @return el índice de la primera aparición del elemento en este vector en
-     * la posición {@code indice} o posterior en el vector;{@code -1} si el
-     * elemento no se encuentra.
-     * @throws IndexOutOfBoundsException si el índice especificado es negativo
-     * @see Object equals(Object)      
-     */
-    public int indiceDe(Object objeto, int indice) {
         if (objeto == null) {
             for (Nodo<E> nodo = this.primero; nodo != null; nodo = nodo.siguiente) {
                 if (nodo.elemento == null) {
@@ -687,14 +628,6 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
         this.primero = this.ultimo = null;
         this.tamanio = 0;
         this.conteoModulo++;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ListIterator<E> listIterator() {
-        return new ListItr(0);
     }
 
     /**
@@ -1071,30 +1004,6 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
     }
 
     /**
-     * Elimina de esta ListaEnlazada todos sus elementos que están contenidos en
-     * Colección especificada.
-     *
-     * @param coleccion una colección de elementos que se eliminarán de la
-     * ListaEnlazada
-     * @return devuelve true si esta ListaEnlazada cambió como resultado de la
-     * llamada
-     * @throws ClassCastException si los tipos de uno o más elementos en esta
-     * lista enlazada son incompatibles con el especificado
-     * colección(<a href="Collection.html#optional-restrictions">
-     * opcional</a>)      
-     *
-     * @throws NullPointerException si esta lista enlazada contiene uno o más
-     * elementos nulos y la colección especificada no admite null elementos
-     * (<a href="Collection.html#optional-restrictions"> opcional </a>), o si la
-     * colección especificada es nula
-     * @since 1.2      
-     */
-    @Override
-    public boolean removerTodo(Coleccion<?> coleccion) {
-        return super.removerTodo(coleccion);
-    }
-
-    /**
      * Elimina la última aparición del elemento especificado en este lista (al
      * atravesar la lista de la cabeza a la cola). Si la lista no contiene el
      * elemento, no se modifica.
@@ -1160,14 +1069,6 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
         return new ListaEnlazada.LLSpliterator<E>(this, -1, 0);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Lista<E> subLista(int desdeIndice, int hastaIndice) {
-        return super.subLista(desdeIndice, hastaIndice);
-    }
-
     @SuppressWarnings("unchecked")
     private ListaEnlazada<E> superClone() {
         try {
@@ -1185,14 +1086,6 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
     @Override
     public int tamanio() {
         return this.tamanio;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return super.toString();
     }
 
     /**
@@ -1227,46 +1120,6 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
         return -1;
     }
 
-    /**
-     * Devuelve el índice de la última aparición del elemento especificado en
-     * esta lista enlazada, buscando hacia atrás desde {@code indice}, o
-     * devuelve -1 si el elemento no se encuentra. Más formalmente, devuelve el
-     * índice más alto {@code i} tal que
-     * <tt>(i & nbsp; & lt; = & nbsp; index & nbsp; & amp;; & nbsp; (objeto ==
-     * null & nbsp;? & nbsp; obtener(i) == null & nbsp;: & nbsp;
-     * objeto.equals(obtener (i))))</tt>, o -1 si no hay tal índice.
-     *
-     * @param objeto elemento para buscar
-     * @param indice índice para comenzar a buscar hacia atrás desde
-     * @return el índice de la última aparición del elemento en posición menor o
-     * igual que {@code indice} en esta lista enlazada; -1 si el elemento no se
-     * encuentra.
-     * @throws IndexOutOfBoundsException si el índice especificado es mayor
-     * igual o igual al tamaño actual de esta lista enlazada     
-     */
-    public int ultimoIndiceDe(Object objeto, int indice) {
-        if (indice >= this.tamanio) {
-            throw new IndexOutOfBoundsException(indice + " >= " + this.tamanio);
-        }
-        if (objeto == null) {
-            for (Nodo<E> nodo = this.ultimo; nodo != null; nodo = nodo.anterior) {
-                indice--;
-                if (nodo.elemento == null) {
-                    return indice;
-                }
-            }
-        } else {
-            for (Nodo<E> nodo = this.ultimo; nodo != null; nodo = nodo.anterior) {
-                indice--;
-                if (objeto.equals(nodo.elemento)) {
-                    return indice;
-                }
-            }
-        }
-        return -1;
-
-    }
-
     private void verificarIndiceElemento(int indice) {
         if (!this.esIndiceElemento(indice)) {
             throw new IndexOutOfBoundsException(this.mostrarMensajeFueraDeLosLimites(indice));
@@ -1276,44 +1129,6 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
     private void verificarIndicePosicion(int indice) {
         if (!this.esIndicePosicion(indice)) {
             throw new IndexOutOfBoundsException(this.mostrarMensajeFueraDeLosLimites(indice));
-        }
-    }
-
-    /**
-     * Verifica si el índice dado está dentro del rango. Si no, lanza un
-     * apropiado excepción en tiempo de ejecución. Este método no verifica si el
-     * índice es negativo: siempre se usa inmediatamente antes del acceso a un
-     * arreglo, que arroja una ArrayIndexOutOfBoundsException si el índice es
-     * negativo.      
-     */
-    private void verificarRango(int indice) {
-        if (indice >= this.tamanio) {
-            throw new IndexOutOfBoundsException(
-                    this.mostrarMensajeFueraDeLosLimites(indice));
-        }
-    }
-
-    /**
-     * Una versión de verificarRango utilizada por agregar y agregarTodo.      
-     */
-    private void verificarRangoParaAgregar(int indice) {
-        if (indice > this.tamanio || indice < 0) {
-            throw new IndexOutOfBoundsException(
-                    this.mostrarMensajeFueraDeLosLimites(indice));
-        }
-    }
-
-    static void verificarRangoSubLista(int desdeIndice, int hastaIndice,
-            int tamanio) {
-        if (desdeIndice < 0) {
-            throw new IndexOutOfBoundsException("desdeIndice = " + desdeIndice);
-        }
-        if (hastaIndice > tamanio) {
-            throw new IndexOutOfBoundsException("hastaIndice = " + hastaIndice);
-        }
-        if (desdeIndice > hastaIndice) {
-            throw new IllegalArgumentException("desdeIndice(" + desdeIndice
-                    + ") > hastaIndice(" + hastaIndice + ")");
         }
     }
 
