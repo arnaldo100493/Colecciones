@@ -41,8 +41,8 @@ import java.util.Iterator;
  * sincronizada. Iteradores a prueba de fallas throw
  * {@code ConcurrentModificationException} sobre una base de mejor esfuerzo. Por
  * lo tanto, sería incorrecto escribir un programa que dependiera de esto
- * excepción por su corrección: <i> el comportamiento a prueba de fallas de los
- * iteradores debe usarse solo para detectar errores. </ i>
+ * excepción por su corrección: <i>el comportamiento a prueba de fallas de los
+ * iteradores debe usarse solo para detectar errores.</i>
  *
  * <p>
  * Esta clase y su iterador implementan todas las<em> métodos</em>
