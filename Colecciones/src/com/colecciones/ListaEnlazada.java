@@ -885,9 +885,69 @@ public class ListaEnlazada<E> extends ListaSecuencialAbstracta<E>
                     arreglo.getClass().getComponentType(), this.tamanio);
         }
         int i = 0;
-        Object[] result = arreglo;
+        Object[] resultado = arreglo;
         for (Nodo<E> nodo = this.primero; nodo != null; nodo = nodo.siguiente) {
-            result[i++] = nodo.elemento;
+            resultado[i++] = nodo.elemento;
+        }
+
+        if (arreglo.length > this.tamanio) {
+            arreglo[this.tamanio] = null;
+        }
+
+        return arreglo;
+    }
+
+    /**
+     * Devuelve un arreglo que contiene todos los elementos en esta lista en
+     * secuencia correcta (del primer al último elemento); el tipo de tiempo de
+     * ejecución del arreglo devuelta es la del arreglo especificada. Si la
+     * lista se ajusta en el arreglo especificado, se devuelve allí. De lo
+     * contrario, un nuevo arreglo se asigna con el tipo de tiempo de ejecución
+     * del arreglo especificada y el tamaño de esta lista.
+     *
+     *      
+     * <p>
+     * Si la lista se ajusta a el arreglo especificada con espacio de sobra (es
+     * decir, el arreglo tiene más elementos que la lista), el elemento en el
+     * arreglo inmediatamente después del final de la lista se establece en
+     * {@code null}.(Esto es útil para determinar la longitud de la lista
+     * <i>solamente</i> si la persona que llama sabe que la lista no contiene
+     * ningún elemento nulo.)      
+     * <p>
+     * Al igual que el método {@link #paraFormar()}, este método actúa como
+     * puente entre API basada en colección y basada en colección. Además, este
+     * método permite control preciso sobre el tipo de tiempo de ejecución de
+     * lel arreglo de salida, y puede,bajo ciertas circunstancias, se puede usar
+     * para ahorrar costos de asignación.        
+     * <p>
+     * Supongamos que {@code x} es una lista conocida por contener solo cadenas.
+     * El siguiente código puede usarse para volcar la lista en un nuevo arreglo
+     * asignado de {@code String}:   
+     * <pre>
+     * String [] y = x.paraFormar(new String[0]);</pre> Tenga en cuenta que
+     * {@code paraFormar(new Object[0])} es idéntico en función a
+     * {@code paraFormar()}.
+     *
+     * @param arreglo el arreglo en el que se encuentran los elementos de la
+     * lista ser almacenado, si es lo suficientemente grande; de lo contrario,
+     * un nuevo arreglo de el mismo tipo de tiempo de ejecución se asigna para
+     * este propósito.
+     * @return un arreglo que contiene los elementos de la lista
+     * @throws ArrayStoreException si el tipo de tiempo de ejecución del arreglo
+     * especificado no es un supertipo del tipo de tiempo de ejecución de cada
+     * elemento en esta lista
+     * @throws NullPointerException si el arreglo especificado es nulo      
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T[][] paraFormar(T[][] arreglo) {
+        if (arreglo.length < this.tamanio) {
+            arreglo = (T[][]) Array.newInstance(
+                    arreglo.getClass().getComponentType(), this.tamanio);
+        }
+        int i = 0;
+        Object[] resultado = arreglo;
+        for (Nodo<E> nodo = this.primero; nodo != null; nodo = nodo.siguiente) {
+            resultado[i++] = nodo.elemento;
         }
 
         if (arreglo.length > this.tamanio) {
